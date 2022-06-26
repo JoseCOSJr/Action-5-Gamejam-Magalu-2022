@@ -125,3 +125,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteHere: {fileID: 21300000, guid: bd26962397ca5d44b8ff289d82c694af, type: 3}
+  roofPiece: 0

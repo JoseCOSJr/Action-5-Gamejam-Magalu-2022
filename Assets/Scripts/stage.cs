@@ -8,12 +8,20 @@ public class stage : MonoBehaviour
     public List<buildPart> buildPartList;
     private List<pedidoObjt> pedidoObjtsPassed = new List<pedidoObjt>();
     private int idLastRequest = 0;
-    private float countTimer = 60f;
+    private float countTimer = 40f;
     private float timeDelivey = 0f;
+    private float addTimer = 0f;
     public Text textTimer, textScores;
     private int scores = 0;
     public GameObject gameOverGoObjt, gameObjectWinGoScene;
     public respawPieces respawPieces;
+    public AudioClip clipTimeRecovery;
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -39,7 +47,15 @@ public class stage : MonoBehaviour
                 {
                     buildPartList[i].SetPiece(null);
                 }
+
                 timeDelivey = 0f;
+
+                if (!pedidoObjtList.Exists(x => x.gameObject.activeInHierarchy))
+                {
+                    audioSource.PlayOneShot(clipTimeRecovery);
+                    addTimer += 40f;
+                    TakeOneRequest();
+                }
             }
             else
             {
@@ -48,17 +64,30 @@ public class stage : MonoBehaviour
                 if (!pedidoObjtList.Exists(x => x.gameObject.activeInHierarchy))
                 {
                     TakeOneRequest();
-                    countTimer += 30f;
+                    countTimer += 40f;
                 }
 
                 if (countTimer > 0f)
                 {
-                    countTimer -= Time.deltaTime;
-                    if (countTimer < 0)
+                    if (addTimer > 0f)
                     {
-                        countTimer = 0f;
+                        float add = 40f * Time.deltaTime;
+                        if (add > addTimer)
+                        {
+                            add = addTimer;
+                        }
+                        addTimer -= add;
+                        countTimer += add;
                     }
-                    textTimer.text = "Timer" + "\n" + Mathf.FloorToInt(countTimer);
+                    else
+                    {
+                        countTimer -= Time.deltaTime;
+                        if (countTimer < 0)
+                        {
+                            countTimer = 0f;
+                        }
+                    }
+                        textTimer.text = "Timer" + "\n" + Mathf.FloorToInt(countTimer);
                 }
                 else
                 {
@@ -72,7 +101,7 @@ public class stage : MonoBehaviour
                     else
                     {
                         TakeOneRequest();
-                        countTimer += 30f;
+                        countTimer += 40f;
                     }
                 }
             }
@@ -96,6 +125,6 @@ public class stage : MonoBehaviour
     private void AddScores(int add)
     {
         scores += add;
-        textScores.text = "Scores"+"\n" + scores;
+        textScores.text = "Scores" + "\n" + scores;
     }
 }
