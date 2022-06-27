@@ -635,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idScene: SampleScene
-  clipSwicthScene: {fileID: 8300000, guid: c4be5a5347d633148b75ba9927a08d30, type: 3}
+  clipSwicthScene: {fileID: 8300000, guid: e180ed7295fae824081c38eb1ff800e1, type: 3}
   anyInputGoToScene: 1
 --- !u!4 &2012060871
 Transform:

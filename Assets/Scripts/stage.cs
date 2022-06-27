@@ -8,15 +8,16 @@ public class stage : MonoBehaviour
     public List<buildPart> buildPartList;
     private List<pedidoObjt> pedidoObjtsPassed = new List<pedidoObjt>();
     private int idLastRequest = 0;
-    private float countTimer = 40f;
+    private float countTimer = 30f;
     private float timeDelivey = 0f;
     private float addTimer = 0f;
     public Text textTimer, textScores;
     private int scores = 0;
     public GameObject gameOverGoObjt, gameObjectWinGoScene;
     public respawPieces respawPieces;
-    public AudioClip clipTimeRecovery;
+    public AudioClip clipTimeRecovery, clipTimeIsOver, clipRequestIsComplete;
     private AudioSource audioSource;
+    private bool triggerTimeWait=false;
 
     private void Start()
     {
@@ -53,8 +54,18 @@ public class stage : MonoBehaviour
                 if (!pedidoObjtList.Exists(x => x.gameObject.activeInHierarchy))
                 {
                     audioSource.PlayOneShot(clipTimeRecovery);
-                    addTimer += 40f;
+                    audioSource.PlayOneShot(clipRequestIsComplete);
+                    addTimer += 30f;
                     TakeOneRequest();
+
+                    Sprite[] sprites = pedidoComplet.GetSpritesArray();
+                    for (int i = 0; i < sprites.Length; i++)
+                    {
+                        if (sprites[i])
+                        {
+                            respawPieces.RemovePieces(sprites[i]);
+                        }
+                    }
                 }
             }
             else
@@ -64,7 +75,8 @@ public class stage : MonoBehaviour
                 if (!pedidoObjtList.Exists(x => x.gameObject.activeInHierarchy))
                 {
                     TakeOneRequest();
-                    countTimer += 40f;
+                    countTimer += 30f;
+                    triggerTimeWait = false;
                 }
 
                 if (countTimer > 0f)
@@ -78,6 +90,7 @@ public class stage : MonoBehaviour
                         }
                         addTimer -= add;
                         countTimer += add;
+                        triggerTimeWait = false;
                     }
                     else
                     {
@@ -86,8 +99,15 @@ public class stage : MonoBehaviour
                         {
                             countTimer = 0f;
                         }
+
+                        if (!triggerTimeWait && countTimer <= clipTimeIsOver.length)
+                        {
+                            triggerTimeWait = true;
+                            audioSource.PlayOneShot(clipTimeIsOver);
+                        }
                     }
-                        textTimer.text = "Timer" + "\n" + Mathf.FloorToInt(countTimer);
+
+                    textTimer.text = "Timer" + "\n" + Mathf.FloorToInt(countTimer);
                 }
                 else
                 {
@@ -101,7 +121,8 @@ public class stage : MonoBehaviour
                     else
                     {
                         TakeOneRequest();
-                        countTimer += 40f;
+                        triggerTimeWait = false;
+                        countTimer += 30f;
                     }
                 }
             }
@@ -110,16 +131,19 @@ public class stage : MonoBehaviour
 
     private void TakeOneRequest()
     {
-        pedidoObjtList[idLastRequest].gameObject.SetActive(true);
-        Sprite[] sprites = pedidoObjtList[idLastRequest].GetSpritesArray();
-
-        respawPieces.RestartPieces();
-        for(int i = 0; i < sprites.Length; i++)
+        if (idLastRequest < pedidoObjtList.Count)
         {
-            respawPieces.AddPieceChoice(sprites[i]);
-        }
+            pedidoObjtList[idLastRequest].gameObject.SetActive(true);
+            Sprite[] sprites = pedidoObjtList[idLastRequest].GetSpritesArray();
 
-        idLastRequest += 1;
+            //respawPieces.RestartPieces();
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                respawPieces.AddPieceChoice(sprites[i]);
+            }
+
+            idLastRequest += 1;
+        }
     }
 
     private void AddScores(int add)

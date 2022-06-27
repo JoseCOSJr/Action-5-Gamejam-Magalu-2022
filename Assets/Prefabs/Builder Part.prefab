@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3054429593743765351}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1.63, y: 1.63, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5585170445359417205}
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objMark: {fileID: 5216391128241134211}
   buildPartDown: {fileID: 0}
+  audioClipDestroyPiece: {fileID: 8300000, guid: b6bc880edb23f5a4ba6357fb1d3aae54, type: 3}
 --- !u!61 &4000573788434887318
 BoxCollider2D:
   m_ObjectHideFlags: 0

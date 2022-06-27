@@ -13,7 +13,7 @@ public class respawPieces : MonoBehaviour
     {
         for(int i = 0; i < piecesParts.Count; i++)
         {
-            for(int j = 0; j < 10; j++)
+            for(int j = 0; j < 5; j++)
             {
                 piece pieceX = Instantiate(piecesParts[i]);
                 pieceX.name = piecesParts[i].name;
@@ -32,11 +32,11 @@ public class respawPieces : MonoBehaviour
             if (piecesAtived.Exists(x => !x.gameObject.activeInHierarchy) || piecesAtived.Count == 0)
             {
                 piecesAtived.Clear();
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Vector3 posNew = Vector3.zero;
                     posNew.y = -4f;
-                    posNew.x = 12 + 5f * i;
+                    posNew.x = 12 + 8f * i;
 
                     int idPart = Random.Range(0, piecesCanChoice.Count);
                     piece pieceX = piecesList.Find(x => !x.gameObject.activeInHierarchy && x.name == piecesCanChoice[idPart].name);
@@ -60,8 +60,12 @@ public class respawPieces : MonoBehaviour
         }
     }
 
-    public void RestartPieces()
+    public void RemovePieces(Sprite sprite)
     {
-        piecesCanChoice.Clear();
+         piece p = piecesCanChoice.Find(x => x.spriteHere == sprite);
+        if (p)
+        {
+            piecesCanChoice.Remove(p);
+        }
     }
 }

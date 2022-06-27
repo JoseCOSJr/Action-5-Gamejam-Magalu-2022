@@ -29,7 +29,7 @@ public class pedidoObjt : MonoBehaviour
             }
         }
 
-        return correctPartsCount == 12;
+        return correctPartsCount == imageSpritesArray.Length;
     }
 
     public Sprite[] GetSpritesArray()

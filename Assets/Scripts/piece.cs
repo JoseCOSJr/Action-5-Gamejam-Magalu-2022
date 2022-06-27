@@ -16,7 +16,7 @@ public class piece : MonoBehaviour
     {
         if (canMove)
         {
-            Vector3 move = Vector3.left * 4f * Time.fixedDeltaTime;
+            Vector3 move = Vector3.left * 6f * Time.fixedDeltaTime;
             transform.Translate(move);
         }
     }

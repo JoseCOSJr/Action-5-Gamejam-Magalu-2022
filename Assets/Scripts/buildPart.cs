@@ -8,6 +8,7 @@ public class buildPart : MonoBehaviour
     private piece pieceHere = null;
     private Collider2D colliderHere;
     public buildPart buildPartDown;
+    public AudioClip audioClipDestroyPiece;
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +65,7 @@ public class buildPart : MonoBehaviour
     {
         if (HavePiece())
         {
+            audioSourceMaster.audioSourceEfx.PlayOneShot(audioClipDestroyPiece);
             SetPiece(null);
         }
     }
